@@ -1,0 +1,24 @@
+name: MonsterIndustries
+version: '1.21.10'
+main: org.omar.monsterIndustries.MonsterIndustries
+api-version: '1.21'
+
+commands:
+  setlevel:
+    description: Set a team's resource level
+    usage: /setlevel <team> <resource> <level>
+    permission: monsterindustries.admin
+
+  buystock:
+    description: Buy stock for a team
+    usage: /buyStock <team> <amount> <stockAmount>
+
+  reloadConfig:
+    description: Reloads the plugin's yml config file
+    permission: monsterindustries.admin
+
+  tactics:
+    description: Opens the tactics menu
+
+  surrender:
+    description: Surrenders your team

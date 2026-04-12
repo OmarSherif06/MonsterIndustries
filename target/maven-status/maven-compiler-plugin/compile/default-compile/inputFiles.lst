@@ -11,6 +11,7 @@ D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\PlayerRespawnListener.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\PlayerStepOnPressurePlateListener.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\PlayerStepOnTripwireListener.java
+D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\PotionSplashListener.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\Slaves.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\SpawnerUnlocks.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\Upgrades.java

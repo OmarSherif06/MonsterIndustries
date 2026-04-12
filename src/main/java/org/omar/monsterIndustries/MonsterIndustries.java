@@ -53,6 +53,8 @@ public final class MonsterIndustries extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
+        Bukkit.getPluginManager().registerEvents(new PotionSplashListener(), this);
+
         getServer().getPluginManager().registerEvents(new TacticsGUI(), this);
 
         // Weapons

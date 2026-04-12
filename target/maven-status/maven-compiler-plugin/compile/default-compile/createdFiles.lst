@@ -9,9 +9,11 @@ org\omar\monsterIndustries\GameManager$4.class
 org\omar\monsterIndustries\GameManager$2.class
 org\omar\monsterIndustries\Listeners\SpawnerUnlocks$2.class
 org\omar\monsterIndustries\MonsterIndustries.class
+org\omar\monsterIndustries\Listeners\PotionSplashListener$1.class
 org\omar\monsterIndustries\TacticsGUI.class
 org\omar\monsterIndustries\Listeners\Upgrades.class
 org\omar\monsterIndustries\SlaveManager.class
+org\omar\monsterIndustries\Listeners\PotionSplashListener.class
 org\omar\monsterIndustries\Listeners\Upgrades$1.class
 org\omar\monsterIndustries\Listeners\PlayerRespawnListener.class
 org\omar\monsterIndustries\Weapons\Arrows$2$1.class

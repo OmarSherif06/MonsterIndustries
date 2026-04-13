@@ -147,6 +147,8 @@ public class MonsterTeam {
                 zombie.setHealth(0);
         }
         this.getSlaves().clear();
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[tag=slave]");
     }
 
     public void clearLevels() {

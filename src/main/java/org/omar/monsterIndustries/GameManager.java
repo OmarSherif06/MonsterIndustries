@@ -225,13 +225,6 @@ public class GameManager implements Listener {
 
         if (enderTeam == null || otherTeam == null) return;
 
-        Bukkit.getOnlinePlayers().stream()
-                .filter(p -> !enderTeam.hasEntry(p.getName()) && !otherTeam.hasEntry(p.getName()))
-                .forEach(p -> {
-                    p.teleport(new Location(Bukkit.getWorlds().getFirst(), 31, 149, -41));
-                    p.sendMessage(getPlugin().prefix + ChatColor.RED + "You are not on a team! Teleported to the Spectator Hub.");
-                });
-
         // Count only online Players in each team
         long enderSize = enderTeam.getEntries().stream()
                 .map(Bukkit::getPlayer)
@@ -257,7 +250,7 @@ public class GameManager implements Listener {
         if (enderSize == 0 || otherSize == 0) return;
 
         if (enderReady >= enderRequired && otherReady >= otherRequired) {
-//            resetGame();
+            resetGame();
 
             // Teleport EnderEnterprise
             ready.keySet().stream()
@@ -289,6 +282,15 @@ public class GameManager implements Listener {
                     if (count <= 0) {
                         cancel();
 
+                        if (count <= 0) {
+                            Bukkit.getOnlinePlayers().stream()
+                                    .filter(p -> !enderTeam.hasEntry(p.getName()) && !otherTeam.hasEntry(p.getName()))
+                                    .forEach(p -> {
+                                        p.teleport(new Location(Bukkit.getWorlds().getFirst(), 31, 149, -41));
+                                        p.sendMessage(getPlugin().prefix + ChatColor.RED + "You are not on a team! Teleported to the Spectator Hub.");
+                                    });
+                        }
+
                         for (Player p : Bukkit.getOnlinePlayers()) {
 
                             p.sendTitle(ChatColor.RED + "START", "", 0, 20, 0);
@@ -302,7 +304,6 @@ public class GameManager implements Listener {
                         }
 
                         running = true;
-
                         return;
                     }
 

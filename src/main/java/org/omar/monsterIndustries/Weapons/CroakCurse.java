@@ -1,4 +1,4 @@
-package org.omar.monsterIndustries.Listeners;
+package org.omar.monsterIndustries.Weapons;
 
 import org.bukkit.*;
 import org.bukkit.entity.EntityType;
@@ -7,21 +7,15 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.MetadataValue;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.omar.monsterIndustries.Events;
-import org.omar.monsterIndustries.MonsterIndustries;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.omar.monsterIndustries.MonsterIndustries.getPlugin;
 
-public class PotionSplashListener implements Listener {
+public class CroakCurse implements Listener {
 
     @EventHandler
     public void PotionSplashEvent(PotionSplashEvent event) {

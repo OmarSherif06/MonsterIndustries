@@ -10,6 +10,8 @@ import org.omar.monsterIndustries.Commands.ReloadConfigCommand;
 import org.omar.monsterIndustries.Commands.SurrenderCommand;
 import org.omar.monsterIndustries.Listeners.*;
 import org.omar.monsterIndustries.Weapons.Arrows;
+import org.omar.monsterIndustries.Weapons.CroakCurse;
+import org.omar.monsterIndustries.Weapons.EnderFlux;
 import org.omar.monsterIndustries.Weapons.Zap;
 
 import java.util.HashMap;
@@ -53,13 +55,13 @@ public final class MonsterIndustries extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
-        Bukkit.getPluginManager().registerEvents(new PotionSplashListener(), this);
-
         getServer().getPluginManager().registerEvents(new TacticsGUI(), this);
 
         // Weapons
         Bukkit.getPluginManager().registerEvents(new Zap(), this);
         Bukkit.getPluginManager().registerEvents(new Arrows(), this);
+        Bukkit.getPluginManager().registerEvents(new CroakCurse(), this);
+        Bukkit.getPluginManager().registerEvents(new EnderFlux(), this);
 
         getCommand("setlevel").setExecutor(new LevelCommand());
         getCommand("buyStock").setExecutor(new BuyStockCommand());

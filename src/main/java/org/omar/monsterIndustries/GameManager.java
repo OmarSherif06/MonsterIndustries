@@ -1,6 +1,5 @@
 package org.omar.monsterIndustries;
 
-import com.destroystokyo.paper.Title;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -250,7 +249,7 @@ public class GameManager implements Listener {
         if (enderSize == 0 || otherSize == 0) return;
 
         if (enderReady >= enderRequired && otherReady >= otherRequired) {
-            resetGame();
+//            resetGame();
 
             // Teleport EnderEnterprise
             ready.keySet().stream()
@@ -329,6 +328,8 @@ public class GameManager implements Listener {
         // Stop Game
         running = false;
 
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[type=item]");
+
         for (Map.Entry<String, MonsterTeam> teamMap : getPlugin().teams.entrySet()) {
             MonsterTeam monsterTeam = teamMap.getValue();
 
@@ -387,16 +388,32 @@ public class GameManager implements Listener {
             }
         }
 
-        // Empty Chests
+        // Empty Chests/Hoppers
         // Creeper Side paper chest
         BlockState state = new Location(Bukkit.getWorlds().getFirst(), 39, 140, -7).getBlock().getState();
         if (state instanceof Container container)
             container.getInventory().clear();
 
+        // Creeper Side hoppers
+        for (int i = 0; i < 2; i++) {
+            Block block = new Location(Bukkit.getWorlds().getFirst(), 39, 141, (-7 - i)).getBlock();
+            state = block.getState();
+            if (state instanceof Container container)
+                container.getInventory().clear();
+        }
+
         // Ender Side paper chest
         state = new Location(Bukkit.getWorlds().getFirst(), 23, 140, -8).getBlock().getState();
         if (state instanceof Container container)
             container.getInventory().clear();
+
+        // Ender Side hoppers
+        for (int i = 0; i < 2; i++) {
+            Block block = new Location(Bukkit.getWorlds().getFirst(), 23, 141, (-8 + i)).getBlock();
+            state = block.getState();
+            if (state instanceof Container container)
+                container.getInventory().clear();
+        }
 
         // Creeper Side non-paper chest
         state = new Location(Bukkit.getWorlds().getFirst(), 54, 141, -14).getBlock().getState();

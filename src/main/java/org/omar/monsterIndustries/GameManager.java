@@ -18,9 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 import org.omar.monsterIndustries.Listeners.Upgrades;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Sound.*;
@@ -356,30 +354,47 @@ public class GameManager implements Listener {
             // Reset Trial Spawners
             // EnderEnterprise
             World world = Bukkit.getWorld("world");
-            Location loc = new Location(world, -6, 142, 2);
-            Location loc2 = new Location(world, -16, 142, 2);
+            ArrayList<Location> trialSpawnerLocations = new ArrayList<Location>();
+            trialSpawnerLocations.add(new Location(world, -6, 142, 2));
+            trialSpawnerLocations.add(new Location(world, -16, 142, 2));
+            trialSpawnerLocations.add(new Location(world, 68, 142, -17));
+            trialSpawnerLocations.add(new Location(world, 78, 142, -17));
 
             BlockData data = Bukkit.createBlockData(Material.TRIAL_SPAWNER);
             org.bukkit.block.data.type.TrialSpawner trialSpawner = (org.bukkit.block.data.type.TrialSpawner) data;
             trialSpawner.setTrialSpawnerState(TrialSpawner.State.ACTIVE);
 
-            Block block = loc.getBlock();
-            block.setType(Material.TRIAL_SPAWNER, false);
-            block.setBlockData(trialSpawner);
+            for (Location loc : trialSpawnerLocations) {
+                Block block = loc.getBlock();
+                block.setType(Material.TRIAL_SPAWNER, false);
+                block.setBlockData(trialSpawner);
+            }
 
-            block = loc2.getBlock();
-            block.setType(Material.TRIAL_SPAWNER, false);
-            block.setBlockData(trialSpawner);
+            // Ender
+            // Normal Spawner
+            fillRegion(world,
+                    new Location(world, -8, 141, 4),
+                    new Location(world, -8, 143, 3),
+                    Material.CHISELED_TUFF);
 
-            fillRegion(loc.getWorld(),
-                    new Location(loc.getWorld(), -6, 141, 3),
-                    new Location(loc.getWorld(), -7, 143, 4),
-                    Material.MAGENTA_STAINED_GLASS);
+            // Ominous Spawner
+            fillRegion(world,
+                    new Location(world, -17, 141, 4),
+                    new Location(world, -17, 144, 3),
+                    Material.CHISELED_TUFF);
 
-            fillRegion(loc.getWorld(),
-                    new Location(loc.getWorld(), -16, 141, 3),
-                    new Location(loc.getWorld(), -16, 143, 4),
-                    Material.MAGENTA_STAINED_GLASS);
+            // Creeper
+            // Normal Spawner
+            fillRegion(world,
+                    new Location(world, 70, 141, -19),
+                    new Location(world, 70, 143, -18),
+                    Material.CHISELED_TUFF);
+
+            // Ominous Spawner
+            fillRegion(world,
+                    new Location(world, 79, 141, -19),
+                    new Location(world, 79, 144, -18),
+                    Material.CHISELED_TUFF);
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 Team team = MonsterTeam.convertTeam(monsterTeam);

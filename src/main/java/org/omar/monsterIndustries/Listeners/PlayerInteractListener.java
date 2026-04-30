@@ -44,6 +44,8 @@ public class PlayerInteractListener implements Listener {
             if (attached.getType() == Material.BONE_BLOCK && !lever.isPowered()) {
                 int amount = getPlugin().teams.get(team.getName()).getBones();
 
+                if (MonsterTeam.convertTeam(team).isDouble) amount *= 2;
+
                 player.sendActionBar(ChatColor.WHITE + "+" + amount + " Bone");
                 player.getInventory().addItem(new ItemStack(Material.BONE, amount));
 
@@ -75,8 +77,12 @@ public class PlayerInteractListener implements Listener {
             player.swingMainHand();
 
             int amount = getPlugin().teams.get(team.getName()).getGunpowder();
+
+            if (MonsterTeam.convertTeam(team).isDouble) amount *= 2;
+
             player.sendActionBar(ChatColor.GRAY + "+" + amount + " Gunpowder");
             player.getInventory().addItem(new ItemStack(Material.GUNPOWDER, amount));
+
         } else if (clicked.getType() == Material.STONE_BUTTON) {
             Switch button = (Switch) clicked.getBlockData();
             BlockFace attachedFace = button.getFacing().getOppositeFace();

@@ -20,10 +20,10 @@ public class MonsterTeam {
     private int coal;
     private int paper;
     private int bones;
-    private int amethyst;
     private int gunpowder;
     private int spidereye;
     private int villager;
+    public boolean isDouble = false;
 
     private ArrayList<Entity> slaves = new ArrayList<Entity>();
 
@@ -67,14 +67,6 @@ public class MonsterTeam {
 
     public void setBones(int bones) {
         this.bones = bones;
-    }
-
-    public int getAmethyst() {
-        return amethyst;
-    }
-
-    public void setAmethyst(int amethyst) {
-        this.amethyst = amethyst;
     }
 
     public int getGunpowder() {
@@ -155,7 +147,6 @@ public class MonsterTeam {
         this.coal = 1;
         this.paper = 1;
         this.bones = 1;
-        this.amethyst = 1;
         this.gunpowder = 1;
         this.spidereye = 1;
         this.villager = 1;

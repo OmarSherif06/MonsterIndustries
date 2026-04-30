@@ -430,15 +430,29 @@ public class GameManager implements Listener {
                 container.getInventory().clear();
         }
 
-        // Creeper Side non-paper chest
+        // Creeper Side non-paper chests
         state = new Location(Bukkit.getWorlds().getFirst(), 54, 141, -14).getBlock().getState();
-        if (state instanceof Container container)
-            container.getInventory().clear();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), 70, 147, -8).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), 70, 147, -9).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+        state = new Location(Bukkit.getWorlds().getFirst(), 70, 147, -6).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
 
         // Ender Side non-paper chest
         state = new Location(Bukkit.getWorlds().getFirst(), 8, 141, -1).getBlock().getState();
-        if (state instanceof Container container)
-            container.getInventory().clear();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), -8, 147, -7).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), -8, 147, -6).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+        state = new Location(Bukkit.getWorlds().getFirst(), -8, 147, -9).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             Location loc = new Location(Bukkit.getWorld("world"), 85, 140, 96);

@@ -29,12 +29,12 @@ public class Arrows implements Listener {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
         Block clicked = event.getClickedBlock();
 
-        if (player.getInventory().getItemInMainHand().getType() != Material.SPECTRAL_ARROW) return;
+        if (player.getInventory().getItemInMainHand().getType() != Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE) return;
         if (clicked == null || clicked.getType() == Material.AIR) return;
 
         event.setCancelled(true);
 
-        if (player.getCooldown(Material.SPECTRAL_ARROW) > 0) return;
+        if (player.getCooldown(Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE) > 0) return;
 
         // Consume arrow
         ItemStack arrowItem = player.getInventory().getItemInMainHand();
@@ -74,7 +74,7 @@ public class Arrows implements Listener {
             }
         }.runTaskTimer(getPlugin(), 0L, 2L);
 
-        player.setCooldown(Material.SPECTRAL_ARROW, 80);
+        player.setCooldown(Material.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE, 80);
     }
 
     private void rainArrows(Player caster, World world, Location center, double radius) {

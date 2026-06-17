@@ -31,11 +31,11 @@ public class EnderFlux implements Listener {
         Player player = event.getPlayer();
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
 
-        if (player.getInventory().getItemInMainHand().getType() != Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE) return;
+        if (player.getInventory().getItemInMainHand().getType() != Material.HEART_OF_THE_SEA) return;
         event.setCancelled(true);
 
-        if (player.getCooldown(Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE) > 0) return;
-        player.setCooldown(Material.FLOW_ARMOR_TRIM_SMITHING_TEMPLATE, 80);
+        if (player.getCooldown(Material.HEART_OF_THE_SEA) > 0) return;
+        player.setCooldown(Material.HEART_OF_THE_SEA, 80);
 
         // Consume item
         ItemStack item = player.getInventory().getItemInMainHand();

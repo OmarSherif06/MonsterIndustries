@@ -55,15 +55,16 @@ public class SpawnerUnlocks implements Listener {
                 player.setVelocity(player.getLocation().getDirection().multiply(-0.6));
                 return;
             }
-            player.getInventory().removeItem(new ItemStack(Material.TRIAL_KEY, 1));
         } else if (isOminousSpawner) {
             if (player.getInventory().getItemInMainHand().getType() != Material.OMINOUS_TRIAL_KEY) {
                 player.sendMessage(getPlugin().prefix + ChatColor.RED + "You must be holding an Ominous trial key");
                 player.setVelocity(player.getLocation().getDirection().multiply(-0.6));
                 return;
             }
-            player.getInventory().removeItem(new ItemStack(Material.OMINOUS_TRIAL_KEY, 1));
         }
+        ItemStack key = player.getInventory().getItemInMainHand();
+        key.setAmount(key.getAmount() - 1);
+        player.getInventory().setItemInMainHand(key);
 
         BlockData data = Bukkit.createBlockData(Material.TRIAL_SPAWNER);
         TrialSpawner spawner = (TrialSpawner) data;
@@ -145,7 +146,10 @@ public class SpawnerUnlocks implements Listener {
                 world.spawnParticle(Particle.EXPLOSION, doorLocation.add(0.5, 0.5, 0.5), 2, 0, 0, 0, 0.01);
                 world.spawnParticle(Particle.CRIT, doorLocation, 30, 0.6, 0.6, 0.6, 0.05);
 
-                Bukkit.broadcastMessage(getPlugin().prefix + ChatColor.WHITE + "Team " + team.getDisplayName() + ChatColor.WHITE + " Has unlocked a new room!");
+                if (!isOminousSpawner)
+                    Bukkit.broadcastMessage(getPlugin().prefix + ChatColor.WHITE + "Team " + team.getDisplayName() + ChatColor.WHITE + " has unlocked Omega room!");
+                else
+                    Bukkit.broadcastMessage(getPlugin().prefix + ChatColor.WHITE + "Team " + team.getDisplayName() + ChatColor.WHITE + " has unlocked Gamma room!");
 
 
                 Location start = doorLocation.clone().add(0.5, 1, 0.5);

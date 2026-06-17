@@ -1,4 +1,7 @@
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\ArmorBundle.java
+D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Bosses\MotherSpider\MotherSpiderDeathEvent.java
+D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Bosses\MotherSpider\MotherSpiderSpawnEvent.java
+D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Bosses\QueenBee\QueenBeeManager.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Commands\BuyStockCommand.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Commands\LevelCommand.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Commands\ReloadConfigCommand.java
@@ -14,6 +17,7 @@ D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\Slaves.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\SpawnerUnlocks.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\Upgrades.java
+D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Listeners\WardenSpawnListener.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\MonsterIndustries.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\MonsterTeam.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\SlaveManager.java
@@ -21,4 +25,5 @@ D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Weapons\Arrows.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Weapons\CroakCurse.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Weapons\EnderFlux.java
+D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Weapons\IrfritsDevastation.java
 D:\Code\Java\Plugins\MonsterIndustries\src\main\java\org\omar\monsterIndustries\Weapons\Zap.java

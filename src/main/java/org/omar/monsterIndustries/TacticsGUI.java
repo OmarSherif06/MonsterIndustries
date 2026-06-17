@@ -5,6 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.TrialSpawner;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 import org.omar.monsterIndustries.Listeners.SpawnerUnlocks;
 
@@ -47,12 +49,28 @@ public class TacticsGUI implements Listener {
                 Material.IRON_DOOR,
                 ChatColor.WHITE + "Markets' Closed!",
                 ChatColor.GRAY + "Lock enemy team's shops for 1 minute 30 seconds",
-                ChatColor.GRAY + "Price: " + ChatColor.GOLD + "185 stock"
+                ChatColor.GRAY + "Price: " + ChatColor.GOLD + "200 stock"
+        );
+
+        ItemStack corporateItem = createMenuItem(
+                Material.FLINT_AND_STEEL,
+                ChatColor.WHITE + "Corporate Espionage",
+                ChatColor.GRAY + "Kills will grant only 50% stocks for enemy team for 2 minutes",
+                ChatColor.GRAY + "Price: " + ChatColor.GOLD + "135 stock"
+        );
+
+        ItemStack frameEnemyItem = createMenuItem(
+                Material.IRON_BARS,
+                ChatColor.GRAY + "Frame Enemy",
+                ChatColor.GRAY + "Imprisons one of the enemy team for 1 minute",
+                ChatColor.GRAY + "Price: " + ChatColor.GOLD + "225 stock"
         );
 
         inv.setItem(10, insiderTeam);
         inv.setItem(12, stealItem);
         inv.setItem(14, marketItem);
+        inv.setItem(16, corporateItem);
+        inv.setItem(28, frameEnemyItem);
 
         player.openInventory(inv);
     }
@@ -84,21 +102,116 @@ public class TacticsGUI implements Listener {
                 stealSlave(player);
             } else if (itemName.contains("Market")) {
                 marketCollapse(player);
+            } else if (itemName.contains("Corporate")) {
+                corporate(player);
+            } else if (itemName.contains("Frame")) {
+                frameEnemy(player);
             }
         }
+    }
+
+    private void frameEnemy(Player player) {
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+        MonsterTeam monsterTeam = MonsterTeam.convertTeam(team);
+
+        if (monsterTeam.getStock() < 225) {
+            player.sendMessage(ChatColor.RED + "Insufficient Funds");
+            player.closeInventory();
+            return;
+        }
+
+        boolean isEnder = team.getName().equals("EnderEnterprise");
+        Team enemyTeam = Bukkit.getScoreboardManager()
+                .getMainScoreboard()
+                .getTeam(isEnder ? "CreeperCorp" : "EnderEnterprise");
+
+        List<Player> enemies = enemyTeam.getEntries().stream()
+                .map(Bukkit::getPlayerExact)
+                .filter(p -> p != null && p.isOnline())
+                .toList();
+
+        monsterTeam.setStock(monsterTeam.getStock() - 225);
+
+        Player target = enemies.get((int) (Math.random() * enemies.size()));
+
+        Bukkit.broadcastMessage(
+                getPlugin().prefix +
+                        team.getDisplayName() +
+                        ChatColor.RED +
+                        " has framed " +
+                        target.getName() + "!"
+        );
+
+        player.closeInventory();
+
+        if (enemyTeam.getName().equals("CreeperCorp")) {
+            target.teleport(new Location(Bukkit.getWorlds().getFirst(), 7, 141, 8.5));
+        } else {
+            target.teleport(new Location(Bukkit.getWorlds().getFirst(), 55.5, 141, -22.5));
+        }
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                MonsterTeam.teleportToSpawn(target);
+            }
+        }.runTaskLater(getPlugin(), (20 * 60)); // one minute
+
+    }
+
+    private void corporate(Player player) {
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
+        MonsterTeam monsterTeam = MonsterTeam.convertTeam(team);
+
+        if (monsterTeam.getStock() < 135) {
+            player.sendMessage(ChatColor.RED + "Insufficient Funds");
+            player.closeInventory();
+            return;
+        }
+
+        monsterTeam.setStock(monsterTeam.getStock() - 135);
+
+        monsterTeam.isEspionaged = true;
+
+        Bukkit.broadcastMessage(
+                getPlugin().prefix +
+                        team.getDisplayName() +
+                        ChatColor.RED + " has activated CORPORATE ESPIONAGE!"
+        );
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.playSound(p.getLocation(), Sound.ENTITY_PILLAGER_CELEBRATE, 0.6f, 1.2f);
+        }
+
+        player.closeInventory();
+
+        Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
+
+            monsterTeam.isEspionaged = false;
+
+            Bukkit.broadcastMessage(
+                    getPlugin().prefix +
+                            ChatColor.GREEN + "Corporate Espionage has ended."
+            );
+
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                p.playSound(p.getLocation(), Sound.ENTITY_PILLAGER_HURT, 0.6f, 1.2f);
+            }
+
+        }, 120 * 20L);
     }
 
     private void marketCollapse(Player player) {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
         MonsterTeam monsterTeam = MonsterTeam.convertTeam(team);
 
-        if (monsterTeam.getStock() < 185) {
+        if (monsterTeam.getStock() < 200) {
             player.sendMessage("Insufficient Funds");
             player.closeInventory();
             return;
         }
 
-        monsterTeam.setStock(monsterTeam.getStock() - 185);
+        monsterTeam.setStock(monsterTeam.getStock() - 200);
 
         Location location1;
         Location location2;

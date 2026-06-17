@@ -24,6 +24,7 @@ public class MonsterTeam {
     private int spidereye;
     private int villager;
     public boolean isDouble = false;
+    public boolean isEspionaged = false;
 
     private ArrayList<Entity> slaves = new ArrayList<Entity>();
 

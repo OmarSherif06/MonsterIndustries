@@ -26,6 +26,9 @@ public class DeathListener implements Listener {
         if (Events.isCrunchTime)
             killReward *= 2;
 
+        if (MonsterTeam.convertTeam(team).isEspionaged)
+            killReward /= 2;
+
         if (team.getName().equals("EnderEnterprise")) {
             MonsterTeam monsterTeam = MonsterTeam.convertTeam(Bukkit.getScoreboardManager().getMainScoreboard().getTeam("CreeperCorp"));
             monsterTeam.setStock(monsterTeam.getStock() + killReward);

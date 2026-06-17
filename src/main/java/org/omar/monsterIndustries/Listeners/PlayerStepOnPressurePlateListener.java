@@ -68,10 +68,12 @@ public class PlayerStepOnPressurePlateListener implements Listener {
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 1.0f, 1.0f);
 
             } else if (belowBlock.getType() == Material.COAL_BLOCK) {
-                int coalAmount = getPlugin().teams.get(team.getName()).getCoal();
+                int amount = getPlugin().teams.get(team.getName()).getCoal();
 
-                player.sendActionBar(ChatColor.BLACK + "+" + coalAmount + " Coal");
-                player.getInventory().addItem(new ItemStack(Material.COAL, coalAmount));
+                if (MonsterTeam.convertTeam(team).isDouble) amount *= 2;
+
+                player.sendActionBar(ChatColor.BLACK + "+" + amount + " Coal");
+                player.getInventory().addItem(new ItemStack(Material.COAL, amount));
                 player.playSound(player.getLocation(), Sound.UI_STONECUTTER_TAKE_RESULT, 1.0f, 1.0f);
 
             }

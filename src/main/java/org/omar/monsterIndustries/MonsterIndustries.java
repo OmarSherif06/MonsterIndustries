@@ -2,15 +2,18 @@ package org.omar.monsterIndustries;
 
 import org.bukkit.*;
 
+import org.bukkit.entity.Warden;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
+import org.omar.monsterIndustries.Bosses.MotherSpider.MotherSpiderDeathEvent;
+import org.omar.monsterIndustries.Bosses.MotherSpider.MotherSpiderSpawnEvent;
+import org.omar.monsterIndustries.Bosses.QueenBee.QueenBeeManager;
 import org.omar.monsterIndustries.Commands.BuyStockCommand;
 import org.omar.monsterIndustries.Commands.LevelCommand;
 import org.omar.monsterIndustries.Commands.ReloadConfigCommand;
 import org.omar.monsterIndustries.Commands.SurrenderCommand;
 import org.omar.monsterIndustries.Listeners.*;
-import org.omar.monsterIndustries.Weapons.Arrows;
-import org.omar.monsterIndustries.Weapons.Zap;
+import org.omar.monsterIndustries.Weapons.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,11 +56,25 @@ public final class MonsterIndustries extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerRespawnListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerJoinListener(), this);
 
+        // Bosses
+        Bukkit.getPluginManager().registerEvents(new WardenSpawnListener(), this);
+
+        // Mother Spider
+        Bukkit.getPluginManager().registerEvents(new MotherSpiderSpawnEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new MotherSpiderDeathEvent(), this);
+
+        // Queen Bee
+        Bukkit.getPluginManager().registerEvents(new QueenBeeManager(), this);
+
         getServer().getPluginManager().registerEvents(new TacticsGUI(), this);
 
         // Weapons
         Bukkit.getPluginManager().registerEvents(new Zap(), this);
         Bukkit.getPluginManager().registerEvents(new Arrows(), this);
+        Bukkit.getPluginManager().registerEvents(new CroakCurse(), this);
+        Bukkit.getPluginManager().registerEvents(new EnderFlux(), this);
+        Bukkit.getPluginManager().registerEvents(new IrfritsDevastation(), this);
+
 
         getCommand("setlevel").setExecutor(new LevelCommand());
         getCommand("buyStock").setExecutor(new BuyStockCommand());

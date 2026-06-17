@@ -1,5 +1,6 @@
 package org.omar.monsterIndustries.Listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,6 +11,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scoreboard.Team;
+import org.omar.monsterIndustries.MonsterTeam;
 
 import static org.omar.monsterIndustries.MonsterIndustries.getPlugin;
 
@@ -19,6 +22,7 @@ public class PlayerStepOnTripwireListener implements Listener {
     public void onPlayerStepOnTripwire(PlayerInteractEvent event) {
         if (event.getAction() != Action.PHYSICAL) return;
         Player player = event.getPlayer();
+        Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
 
         Block clickedBlock = event.getClickedBlock();
         Material type = clickedBlock.getType();
@@ -35,6 +39,8 @@ public class PlayerStepOnTripwireListener implements Listener {
             player.teleport(target);
 
             int amount = getPlugin().teams.get(player.getScoreboard().getEntryTeam(player.getName()).getName()).getSpiderEye();
+
+            if (MonsterTeam.convertTeam(team).isDouble) amount *= 2;
 
             player.sendActionBar(ChatColor.RED + "+" + amount + " Spider Eye");
             player.getInventory().addItem(new ItemStack(Material.SPIDER_EYE, amount));

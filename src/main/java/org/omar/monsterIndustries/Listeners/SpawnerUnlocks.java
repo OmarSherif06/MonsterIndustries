@@ -38,8 +38,16 @@ public class SpawnerUnlocks implements Listener {
         if (currentSpawner.getTrialSpawnerState() == TrialSpawner.State.INACTIVE)
             return;
 
-        boolean isNormalSpawner = loc.getBlockX() == -6 && loc.getBlockY() == 142 && loc.getBlockZ() == 2;
-        boolean isOminousSpawner = loc.getBlockX() == -16 && loc.getBlockY() == 142 && loc.getBlockZ() == 2;
+        boolean isNormalSpawner;
+        boolean isOminousSpawner;
+        if (team.getName().equals("EnderEnterprise")) {
+            isNormalSpawner = loc.getBlockX() == -6 && loc.getBlockY() == 142 && loc.getBlockZ() == 2;
+            isOminousSpawner = loc.getBlockX() == -16 && loc.getBlockY() == 142 && loc.getBlockZ() == 2;
+        } else {
+            isNormalSpawner = loc.getBlockX() == 68 && loc.getBlockY() == 142 && loc.getBlockZ() == -17;
+            isOminousSpawner = loc.getBlockX() == 78 && loc.getBlockY() == 142 && loc.getBlockZ() == -17;
+
+        }
 
         if (isNormalSpawner) {
             if (player.getInventory().getItemInMainHand().getType() != Material.TRIAL_KEY) {
@@ -47,15 +55,16 @@ public class SpawnerUnlocks implements Listener {
                 player.setVelocity(player.getLocation().getDirection().multiply(-0.6));
                 return;
             }
-            player.getInventory().removeItem(new ItemStack(Material.TRIAL_KEY, 1));
         } else if (isOminousSpawner) {
             if (player.getInventory().getItemInMainHand().getType() != Material.OMINOUS_TRIAL_KEY) {
                 player.sendMessage(getPlugin().prefix + ChatColor.RED + "You must be holding an Ominous trial key");
                 player.setVelocity(player.getLocation().getDirection().multiply(-0.6));
                 return;
             }
-            player.getInventory().removeItem(new ItemStack(Material.OMINOUS_TRIAL_KEY, 1));
         }
+        ItemStack key = player.getInventory().getItemInMainHand();
+        key.setAmount(key.getAmount() - 1);
+        player.getInventory().setItemInMainHand(key);
 
         BlockData data = Bukkit.createBlockData(Material.TRIAL_SPAWNER);
         TrialSpawner spawner = (TrialSpawner) data;
@@ -63,15 +72,22 @@ public class SpawnerUnlocks implements Listener {
         loc.getBlock().setBlockData(spawner);
 
         World world = loc.getWorld();
-        Location glassLocation;
+        Location doorLocation;
         if (isNormalSpawner) {
-            glassLocation = new Location(loc.getWorld(), -6, 141, 3);
+            if (team.getName().equals("EnderEnterprise"))
+                doorLocation = new Location(loc.getWorld(), -8, 141, 3.5);
+            else
+                doorLocation = new Location(loc.getWorld(), 70, 141, -18.5);
+
         } else {
-            glassLocation = new Location(loc.getWorld(), -16, 141, 3);
+            if (team.getName().equals("EnderEnterprise"))
+                doorLocation = new Location(loc.getWorld(), -17, 141, 3.5);
+            else
+                doorLocation = new Location(loc.getWorld(), 79, 141, -18.5);
         }
 
-        world.playSound(glassLocation, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 0.6f);
-        world.playSound(glassLocation, Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 2.0f);
+        world.playSound(doorLocation, Sound.BLOCK_BEACON_ACTIVATE, 1.0f, 0.6f);
+        world.playSound(doorLocation, Sound.ENTITY_PLAYER_LEVELUP, 0.5f, 2.0f);
 
         // Run repeating particle task for 3 seconds (~60 ticks)
         new BukkitRunnable() {
@@ -82,7 +98,7 @@ public class SpawnerUnlocks implements Listener {
                     this.cancel();
                     return;
                 }
-                world.spawnParticle(Particle.ENCHANT, glassLocation, 100, 1, 1.5, 1.5, 3);
+                world.spawnParticle(Particle.ENCHANT, doorLocation, 100, 1, 1.5, 1.5, 3);
                 ticks += 5;
             }
         }.runTaskTimer(getPlugin(), 0L, 5L);
@@ -96,27 +112,54 @@ public class SpawnerUnlocks implements Listener {
                 inactive.setTrialSpawnerState(TrialSpawner.State.INACTIVE);
                 loc.getBlock().setBlockData(inactive);
 
-                if (isNormalSpawner)
-                    fillRegion(loc.getWorld(),
-                            new Location(loc.getWorld(), -6, 141, 3),
-                            new Location(loc.getWorld(), -7, 143, 4),
+                if (isNormalSpawner) {
+                    if (team.getName().equals("EnderEnterprise")) {
+                        fillRegion(loc.getWorld(),
+                            new Location(loc.getWorld(), -8, 141, 4),
+                            new Location(loc.getWorld(), -8, 143, 3),
+                            Material.AIR);
+                    } else {
+                        fillRegion(loc.getWorld(),
+                            new Location(loc.getWorld(), 70, 141, -19),
+                            new Location(loc.getWorld(), 70, 143, -18),
                             Material.AIR);
 
-                if (isOminousSpawner)
-                    fillRegion(loc.getWorld(),
-                            new Location(loc.getWorld(), -16, 141, 3),
-                            new Location(loc.getWorld(), -16, 143, 4),
+                    }
+                }
+
+                if (isOminousSpawner) {
+                    if (team.getName().equals("EnderEnterprise")) {
+                        fillRegion(loc.getWorld(),
+                            new Location(loc.getWorld(), -17, 141, 4),
+                            new Location(loc.getWorld(), -17, 144, 3),
+                            Material.AIR);
+                    } else {
+                        fillRegion(loc.getWorld(),
+                            new Location(loc.getWorld(), 79, 141, -19),
+                            new Location(loc.getWorld(), 79, 144, -18),
                             Material.AIR);
 
-                world.playSound(glassLocation, Sound.ENTITY_GENERIC_EXPLODE, 0.8f, 1.2f);
-                world.spawnParticle(Particle.EXPLOSION, glassLocation.add(0.5, 0.5, 0.5), 2, 0, 0, 0, 0.01);
-                world.spawnParticle(Particle.CRIT, glassLocation, 30, 0.6, 0.6, 0.6, 0.05);
+                    }
+                }
 
-                Bukkit.broadcastMessage(getPlugin().prefix + ChatColor.WHITE + "Team " + team.getDisplayName() + ChatColor.WHITE + " Has unlocked a new room!");
+                world.playSound(doorLocation, Sound.ENTITY_GENERIC_EXPLODE, 0.8f, 1.2f);
+                world.spawnParticle(Particle.EXPLOSION, doorLocation.add(0.5, 0.5, 0.5), 2, 0, 0, 0, 0.01);
+                world.spawnParticle(Particle.CRIT, doorLocation, 30, 0.6, 0.6, 0.6, 0.05);
+
+                if (!isOminousSpawner)
+                    Bukkit.broadcastMessage(getPlugin().prefix + ChatColor.WHITE + "Team " + team.getDisplayName() + ChatColor.WHITE + " has unlocked Omega room!");
+                else
+                    Bukkit.broadcastMessage(getPlugin().prefix + ChatColor.WHITE + "Team " + team.getDisplayName() + ChatColor.WHITE + " has unlocked Gamma room!");
 
 
-                Location start = glassLocation.clone().add(0.5, 1, 0.5);
-                Vector direction = new Vector(1, 0, 0);
+                Location start = doorLocation.clone().add(0.5, 1, 0.5);
+
+                Vector direction;
+                if (team.getName().equals("EnderEnterprise"))
+                    direction = new Vector(1, 0, 0);
+                else
+                    direction = new Vector(-1, 0, 0);
+
                 int totalSteps = 15;
                 double distancePerStep = 1;
 

@@ -23,12 +23,12 @@ public class Zap implements Listener {
         Team team = Bukkit.getScoreboardManager().getMainScoreboard().getEntryTeam(player.getName());
         Block clicked = event.getClickedBlock();
 
-        if (player.getInventory().getItemInMainHand().getType() != Material.LIGHTNING_ROD) return;
+        if (player.getInventory().getItemInMainHand().getType() != Material.FEATHER) return;
         if (clicked == null || clicked.getType() == Material.AIR) return;
 
         event.setCancelled(true);
 
-        if (player.getCooldown(Material.LIGHTNING_ROD) > 0) return;
+        if (player.getCooldown(Material.FEATHER) > 0) return;
 
         ItemStack rod = player.getInventory().getItemInMainHand();
         rod.setAmount(rod.getAmount() - 1);
@@ -104,7 +104,7 @@ public class Zap implements Listener {
             }
         }.runTaskTimer(getPlugin(), 0L, 2L);
 
-        player.setCooldown(Material.LIGHTNING_ROD, 60);
+        player.setCooldown(Material.FEATHER, 60);
     }
 
     public void drawCircle(Particle particle, double radius, World world, Location strikeLoc) {

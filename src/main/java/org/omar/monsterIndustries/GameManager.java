@@ -1,6 +1,5 @@
 package org.omar.monsterIndustries;
 
-import com.destroystokyo.paper.Title;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -19,9 +18,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 import org.omar.monsterIndustries.Listeners.Upgrades;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getLogger;
 import static org.bukkit.Sound.*;
@@ -225,13 +222,6 @@ public class GameManager implements Listener {
 
         if (enderTeam == null || otherTeam == null) return;
 
-        Bukkit.getOnlinePlayers().stream()
-                .filter(p -> !enderTeam.hasEntry(p.getName()) && !otherTeam.hasEntry(p.getName()))
-                .forEach(p -> {
-                    p.teleport(new Location(Bukkit.getWorlds().getFirst(), 31, 149, -41));
-                    p.sendMessage(getPlugin().prefix + ChatColor.RED + "You are not on a team! Teleported to the Spectator Hub.");
-                });
-
         // Count only online Players in each team
         long enderSize = enderTeam.getEntries().stream()
                 .map(Bukkit::getPlayer)
@@ -289,6 +279,15 @@ public class GameManager implements Listener {
                     if (count <= 0) {
                         cancel();
 
+                        if (count <= 0) {
+                            Bukkit.getOnlinePlayers().stream()
+                                    .filter(p -> !enderTeam.hasEntry(p.getName()) && !otherTeam.hasEntry(p.getName()))
+                                    .forEach(p -> {
+                                        p.teleport(new Location(Bukkit.getWorlds().getFirst(), 31, 149, -41));
+                                        p.sendMessage(getPlugin().prefix + ChatColor.RED + "You are not on a team! Teleported to the Spectator Hub.");
+                                    });
+                        }
+
                         for (Player p : Bukkit.getOnlinePlayers()) {
 
                             p.sendTitle(ChatColor.RED + "START", "", 0, 20, 0);
@@ -302,7 +301,6 @@ public class GameManager implements Listener {
                         }
 
                         running = true;
-
                         return;
                     }
 
@@ -327,6 +325,8 @@ public class GameManager implements Listener {
     public static void resetGame() {
         // Stop Game
         running = false;
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "kill @e[type=item]");
 
         for (Map.Entry<String, MonsterTeam> teamMap : getPlugin().teams.entrySet()) {
             MonsterTeam monsterTeam = teamMap.getValue();
@@ -354,30 +354,47 @@ public class GameManager implements Listener {
             // Reset Trial Spawners
             // EnderEnterprise
             World world = Bukkit.getWorld("world");
-            Location loc = new Location(world, -6, 142, 2);
-            Location loc2 = new Location(world, -16, 142, 2);
+            ArrayList<Location> trialSpawnerLocations = new ArrayList<Location>();
+            trialSpawnerLocations.add(new Location(world, -6, 142, 2));
+            trialSpawnerLocations.add(new Location(world, -16, 142, 2));
+            trialSpawnerLocations.add(new Location(world, 68, 142, -17));
+            trialSpawnerLocations.add(new Location(world, 78, 142, -17));
 
             BlockData data = Bukkit.createBlockData(Material.TRIAL_SPAWNER);
             org.bukkit.block.data.type.TrialSpawner trialSpawner = (org.bukkit.block.data.type.TrialSpawner) data;
             trialSpawner.setTrialSpawnerState(TrialSpawner.State.ACTIVE);
 
-            Block block = loc.getBlock();
-            block.setType(Material.TRIAL_SPAWNER, false);
-            block.setBlockData(trialSpawner);
+            for (Location loc : trialSpawnerLocations) {
+                Block block = loc.getBlock();
+                block.setType(Material.TRIAL_SPAWNER, false);
+                block.setBlockData(trialSpawner);
+            }
 
-            block = loc2.getBlock();
-            block.setType(Material.TRIAL_SPAWNER, false);
-            block.setBlockData(trialSpawner);
+            // Ender
+            // Normal Spawner
+            fillRegion(world,
+                    new Location(world, -8, 141, 4),
+                    new Location(world, -8, 143, 3),
+                    Material.CHISELED_TUFF);
 
-            fillRegion(loc.getWorld(),
-                    new Location(loc.getWorld(), -6, 141, 3),
-                    new Location(loc.getWorld(), -7, 143, 4),
-                    Material.MAGENTA_STAINED_GLASS);
+            // Ominous Spawner
+            fillRegion(world,
+                    new Location(world, -17, 141, 4),
+                    new Location(world, -17, 144, 3),
+                    Material.CHISELED_TUFF);
 
-            fillRegion(loc.getWorld(),
-                    new Location(loc.getWorld(), -16, 141, 3),
-                    new Location(loc.getWorld(), -16, 143, 4),
-                    Material.MAGENTA_STAINED_GLASS);
+            // Creeper
+            // Normal Spawner
+            fillRegion(world,
+                    new Location(world, 70, 141, -19),
+                    new Location(world, 70, 143, -18),
+                    Material.CHISELED_TUFF);
+
+            // Ominous Spawner
+            fillRegion(world,
+                    new Location(world, 79, 141, -19),
+                    new Location(world, 79, 144, -18),
+                    Material.CHISELED_TUFF);
 
             for (Player p : Bukkit.getOnlinePlayers()) {
                 Team team = MonsterTeam.convertTeam(monsterTeam);
@@ -386,26 +403,56 @@ public class GameManager implements Listener {
             }
         }
 
-        // Empty Chests
+        // Empty Chests/Hoppers
         // Creeper Side paper chest
         BlockState state = new Location(Bukkit.getWorlds().getFirst(), 39, 140, -7).getBlock().getState();
         if (state instanceof Container container)
             container.getInventory().clear();
+
+        // Creeper Side hoppers
+        for (int i = 0; i < 2; i++) {
+            Block block = new Location(Bukkit.getWorlds().getFirst(), 39, 141, (-7 - i)).getBlock();
+            state = block.getState();
+            if (state instanceof Container container)
+                container.getInventory().clear();
+        }
 
         // Ender Side paper chest
         state = new Location(Bukkit.getWorlds().getFirst(), 23, 140, -8).getBlock().getState();
         if (state instanceof Container container)
             container.getInventory().clear();
 
-        // Creeper Side non-paper chest
+        // Ender Side hoppers
+        for (int i = 0; i < 2; i++) {
+            Block block = new Location(Bukkit.getWorlds().getFirst(), 23, 141, (-8 + i)).getBlock();
+            state = block.getState();
+            if (state instanceof Container container)
+                container.getInventory().clear();
+        }
+
+        // Creeper Side non-paper chests
         state = new Location(Bukkit.getWorlds().getFirst(), 54, 141, -14).getBlock().getState();
-        if (state instanceof Container container)
-            container.getInventory().clear();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), 70, 147, -8).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), 70, 147, -9).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+        state = new Location(Bukkit.getWorlds().getFirst(), 70, 147, -6).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
 
         // Ender Side non-paper chest
         state = new Location(Bukkit.getWorlds().getFirst(), 8, 141, -1).getBlock().getState();
-        if (state instanceof Container container)
-            container.getInventory().clear();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), -8, 147, -7).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+
+        state = new Location(Bukkit.getWorlds().getFirst(), -8, 147, -6).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
+        state = new Location(Bukkit.getWorlds().getFirst(), -8, 147, -9).getBlock().getState();
+        if (state instanceof Container container) container.getInventory().clear();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             Location loc = new Location(Bukkit.getWorld("world"), 85, 140, 96);

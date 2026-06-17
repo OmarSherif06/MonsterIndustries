@@ -110,7 +110,6 @@ public class Upgrades implements Listener {
 
         if (block == Material.EMERALD_BLOCK) {
             refreshVillagers(team);
-            Bukkit.broadcastMessage("UPGRADES.java");
         }
 
         if (upgradeNames.get(block) == null) {

@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 import org.omar.monsterIndustries.Bosses.MotherSpider.MotherSpiderDeathEvent;
 import org.omar.monsterIndustries.Bosses.MotherSpider.MotherSpiderSpawnEvent;
+import org.omar.monsterIndustries.Bosses.QueenBee.QueenBeeManager;
 import org.omar.monsterIndustries.Commands.BuyStockCommand;
 import org.omar.monsterIndustries.Commands.LevelCommand;
 import org.omar.monsterIndustries.Commands.ReloadConfigCommand;
@@ -61,6 +62,9 @@ public final class MonsterIndustries extends JavaPlugin {
         // Mother Spider
         Bukkit.getPluginManager().registerEvents(new MotherSpiderSpawnEvent(), this);
         Bukkit.getPluginManager().registerEvents(new MotherSpiderDeathEvent(), this);
+
+        // Queen Bee
+        Bukkit.getPluginManager().registerEvents(new QueenBeeManager(), this);
 
         getServer().getPluginManager().registerEvents(new TacticsGUI(), this);
 

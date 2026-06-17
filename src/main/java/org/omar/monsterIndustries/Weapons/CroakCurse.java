@@ -26,7 +26,7 @@ public class CroakCurse implements Listener {
 
         List<Location> mobLocations = new ArrayList<>();
         for (LivingEntity entity : event.getAffectedEntities()) {
-            if (entity.getScoreboardTags().contains("mob")) {
+            if (entity.getScoreboardTags().contains("mob") && !entity.getScoreboardTags().contains("boss")) {
                 mobLocations.add(entity.getLocation());
                 entity.teleport(new Location(potion.getWorld(), 0, 0, 0));
                 entity.setHealth(0);
